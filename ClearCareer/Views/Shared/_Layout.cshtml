@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=\, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <title>Clear Career - @ViewData["Title"]</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <header>
+            <!-- Navigation -->
+            <a id="logo" href="/"><img id="logo-img" src="/images/logo.jpg" alt="" /></a>
+
+            <nav>
+                <div>
+                    <a href="/Offers/All">Dashboard</a>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- Logged-in users -->
+                    <div class="user">
+                        <a href="/Offers/Create">Create Offer</a>
+                        <a id="logoutBtn" href="/User/Logout">Logout</a>
+                    </div>
+                }
+                else
+                {
+                    <!-- Guest users -->
+                    <div class="guest">
+                        <a href="/User/Login">Login</a>
+                        <a href="/User/Register">Register</a>
+                    </div>
+                }
+            </nav>
+        </header>
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+    <footer>
+        <p>ClearCareer</p>
+    </footer>
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>
