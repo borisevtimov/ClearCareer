@@ -17,13 +17,13 @@
 
             <nav>
                 <div>
-                    <a href="/Offers/All">Dashboard</a>
+                    <a href="/Offer/All">Dashboard</a>
                 </div>
                 @if (User.Identity.IsAuthenticated)
                 {
                     <!-- Logged-in users -->
                     <div class="user">
-                        <a href="/Offers/Create">Create Offer</a>
+                        <a href="/Offer/Create">Create Offer</a>
                         <a id="logoutBtn" href="/User/Logout">Logout</a>
                     </div>
                 }
