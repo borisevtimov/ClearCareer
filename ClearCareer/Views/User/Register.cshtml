@@ -8,10 +8,14 @@
 <section id="register">
     <div class="form">
         <h2>Register</h2>
-        <form onsubmit="onLoad(event)" class="login-form" href="/User/Register" method="post">
+        <form class="login-form" action="/User/Register" onsubmit="onLoad(event)" method="post">
+            <span asp-validation-for="@Model.Username"></span>
             <input asp-for="@Model.Username" type="text" placeholder="Username" />
+            <span asp-validation-for="@Model.Email"></span>
             <input asp-for="@Model.Email" type="text" placeholder="Email" />
+            <span asp-validation-for="@Model.Password"></span>
             <input asp-for="@Model.Password" type="password" placeholder="Password" />
+            <span asp-validation-for="@Model.ConfirmPassword"></span>
             <input asp-for="@Model.ConfirmPassword" type="password" placeholder="Repeat Password" />
             <button type="submit">Register</button>
             <p class="message">Already registered? <a href="/User/Login">Login</a></p>
