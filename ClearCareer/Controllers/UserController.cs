@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClearCareer.Core.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ClearCareer.Controllers
 {
@@ -10,6 +11,12 @@ namespace ClearCareer.Controllers
         }
 
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterViewModel model)
         {
             return View();
         }
