@@ -8,7 +8,7 @@
 <section id="register">
     <div class="form">
         <h2>Register</h2>
-        <form id="register-form" onsubmit="onLoad(event)" class="login-form" href="/User/Register" method="post">
+        <form onsubmit="onLoad(event)" class="login-form" href="/User/Register" method="post">
             <input asp-for="@Model.Username" type="text" placeholder="Username" />
             <input asp-for="@Model.Email" type="text" placeholder="Email" />
             <input asp-for="@Model.Password" type="password" placeholder="Password" />
