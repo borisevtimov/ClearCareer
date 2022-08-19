@@ -5,7 +5,7 @@ namespace ClearCareer.Core.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Username is required!")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Username is required and cannot contain empty characters!")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5 and 20 characters!")]
         public string Username { get; set; }
 

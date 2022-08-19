@@ -23,7 +23,6 @@ namespace ClearCareer.Infrastructure.Data
             base.OnModelCreating(builder);
            
             ModelCreator.RenameEntities(builder);
-            ModelCreator.IgnoreUnusedColumns(builder);
         }
     }
 }
