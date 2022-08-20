@@ -2,10 +2,12 @@
 using ClearCareer.Core.ViewModels;
 using ClearCareer.Infrastructure.Data;
 using ClearCareer.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+#nullable disable warnings
 
 namespace ClearCareer.Core.Services
 {
@@ -48,10 +50,24 @@ namespace ClearCareer.Core.Services
             await signInManager.SignInAsync(user, isPersistent: false);
         }
 
+        public async Task LoginUserAsync(LoginViewModel model)
+        {
+            ApplicationUser user = await context.ApplicationUsers
+                .FirstOrDefaultAsync(u => (u.UserName == model.UsernameOrEmail || u.Email == model.UsernameOrEmail)
+                && u.PasswordHash == HashPassword(model.Password));
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid login credentials!");
+            }
+
+            await signInManager.SignInAsync(user, isPersistent: false);
+        }
+
         public async Task<Tuple<bool, string>> UserExistsAsync(RegisterViewModel model)
         {
             bool isValid = true;
-            string errorMessage = string.Empty;
+            string errorMessage = null;
 
             ApplicationUser? user = await context.ApplicationUsers
                 .FirstOrDefaultAsync(u => u.UserName == model.Username || u.Email == model.Email);
@@ -71,6 +87,11 @@ namespace ClearCareer.Core.Services
 
             using SHA256 hash = SHA256.Create();
             return Convert.ToBase64String(hash.ComputeHash(bytePassword));
+        }
+
+        public async Task SignOutAsync()
+        {
+            await signInManager.SignOutAsync();
         }
     }
 }

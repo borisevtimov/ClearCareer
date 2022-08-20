@@ -1,4 +1,5 @@
 ﻿using ClearCareer.Core.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace ClearCareer.Core.Interfaces
 {
@@ -7,5 +8,9 @@ namespace ClearCareer.Core.Interfaces
         Task<Tuple<bool, string>> UserExistsAsync(RegisterViewModel model);
 
         Task RegisterUserAsync(RegisterViewModel model);
+
+        Task LoginUserAsync(LoginViewModel model);
+
+        Task SignOutAsync();
     }
 }

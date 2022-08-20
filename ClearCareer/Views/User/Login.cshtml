@@ -1,13 +1,16 @@
-﻿@{
+﻿@using ClearCareer.Core.ViewModels
+@model LoginViewModel
+
+@{
     ViewData["Title"] = "Login";
 }
 
 <section id="login">
     <div class="form">
         <h2>Login</h2>
-        <form class="login-form">
-            <input type="text" name="email" id="email" placeholder="Username or Email" />
-            <input type="password" name="password" id="password" placeholder="Password" />
+        <form class="login-form" action="/User/Login" onsubmit="return onLogin(event)" method="post">
+            <input asp-for="@Model.UsernameOrEmail" type="text" id="login-username" placeholder="Username or Email" />
+            <input asp-for="@Model.Password" type="password" id="login-password" placeholder="Password" />
             <button type="submit">Login</button>
             <p class="message">
                 Not registered? <a href="/User/Register">Create an account</a>
@@ -15,3 +18,7 @@
         </form>
     </div>
 </section>
+
+@section Scripts{
+    <script src="/js/login-validation.js"></script>
+}

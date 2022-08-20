@@ -19,6 +19,7 @@ namespace ClearCareer.Core.ViewModels
 
         [Required(ErrorMessage = "Confirm password is required!")]
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match!")]
+
         public string ConfirmPassword { get; set; }
     }
 }

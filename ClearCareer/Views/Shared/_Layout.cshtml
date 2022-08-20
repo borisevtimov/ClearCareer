@@ -17,6 +17,10 @@
 
             <nav>
                 <div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a>Hello, @User.Identity.Name</a>
+                    }
                     <a href="/Offer/All">Dashboard</a>
                 </div>
                 @if (User.Identity.IsAuthenticated)

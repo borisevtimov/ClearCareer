@@ -1,7 +1,6 @@
 ﻿using ClearCareer.Core.Interfaces;
-using ClearCareer.Core.Services;
 using ClearCareer.Core.ViewModels;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClearCareer.Controllers
@@ -20,6 +19,21 @@ namespace ClearCareer.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            try
+            {
+                await userService.LoginUserAsync(model);
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+
+            return Redirect("/Offer/All");
+        }
+
         public IActionResult Register()
         {
             return View();
@@ -28,33 +42,35 @@ namespace ClearCareer.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-
-            }
-
-            (bool isValid, string errorMessage) = await userService.UserExistsAsync(model);
-
-            if (!isValid)
-            {
-
-            }
-
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+
+                (bool isValid, string errorMessage) = await userService.UserExistsAsync(model);
+
+                if (!isValid)
+                {
+                    return View();
+                }
+
                 await userService.RegisterUserAsync(model);
             }
             catch (Exception)
             {
-                throw;
+                return View();
             }
 
             return Redirect("/Offer/All");
         }
 
-        public IActionResult Logout()
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Logout()
         {
-            SignOut();
+            await userService.SignOutAsync();
+
             return Redirect("/");
         }
     }
