@@ -1,20 +1,27 @@
-﻿@{
+﻿@using ClearCareer.Core.ViewModels
+@model CreateOfferViewModel
+
+@{
     ViewData["Title"] = "Create offer";
 }
 
 <section id="create">
     <div class="form">
         <h2>Create Offer</h2>
-        <form class="create-form" action="/Offer/Create" method="post">
-            <input type="text" name="title" id="job-title" placeholder="Title" />
-            <input type="text" name="imageUrl" id="job-logo" placeholder="Company logo url" />
-            <input type="text" name="category" id="job-category" placeholder="Category" />
-            <textarea id="job-description" name="description" placeholder="Description" rows="4" cols="50"></textarea>
-            <textarea id="job-requirements" name="requirements" placeholder="Requirements" rows="4"
+        <form class="create-form" action="/Offer/Create" onsubmit="return onCreate(event)" method="post">
+            <input asp-for="@Model.Title" type="text" name="title" id="job-title" placeholder="Title" />
+            <input asp-for="@Model.ImageUrl" type="text" name="imageUrl" id="job-logo" placeholder="Company logo url" />
+            <input asp-for="@Model.Categories" type="text" name="category" id="job-category" placeholder="Category" />
+            <textarea asp-for="@Model.Description" id="job-description" name="description" placeholder="Description" rows="4" cols="50"></textarea>
+            <textarea asp-for="@Model.Requirements" id="job-requirements" name="requirements" placeholder="Requirements" rows="4"
                       cols="50"></textarea>
-            <input type="text" name="salary" id="job-salary" placeholder="Salary" />
+            <input asp-for="@Model.Salary" type="text" name="salary" id="job-salary" placeholder="Salary" />
 
             <button type="submit">post</button>
         </form>
     </div>
 </section>
+
+@section Scripts{
+    <script src="/js/create-offer-validation.js"></script>
+}

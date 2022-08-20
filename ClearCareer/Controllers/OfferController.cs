@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClearCareer.Core.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClearCareer.Controllers
@@ -12,6 +13,12 @@ namespace ClearCareer.Controllers
 
         [Authorize(Roles = "User")]
         public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateOfferViewModel model)
         {
             return View();
         }
