@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 #nullable disable warnings
 
 namespace ClearCareer.Core.ViewModels
@@ -9,7 +10,7 @@ namespace ClearCareer.Core.ViewModels
         [StringLength(80, MinimumLength = 1, ErrorMessage = "Title must be between 1 and 80 characters!")]
         public string Title { get; set; }
 
-        public string? ImageUrl { get; set; }
+        public IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = "Categories are required!")]
         public string Categories { get; set; }

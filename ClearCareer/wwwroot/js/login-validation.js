@@ -41,10 +41,11 @@ function removeErrors(form) {
     const spans = form.querySelectorAll('span');
     const inputs = form.querySelectorAll('input');
 
-    if (spans.length != 0) {
-        for (let i = 0; i < spans.length; i++) {
-            form.removeChild(spans[i]);
-            inputs[i].style.border = 'none';
-        }
+    for (let i = 0; i < spans.length; i++) {
+        form.removeChild(spans[i]);
+    }
+
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].style.border = 'none';
     }
 }

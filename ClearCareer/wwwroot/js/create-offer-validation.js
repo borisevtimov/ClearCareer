@@ -4,84 +4,56 @@
     let isValid = true;
 
     const title = formData.get('Title');
-    const imageUrl = formData.get('ImageUrl');
+    const image = formData.get('Image');
     const categories = formData.get('Categories');
     const description = formData.get('Description');
     const requirements = formData.get('Requirements');
     const salary = formData.get('Salary');
 
-    // username validation
-    if (username.length == 0) {
-        const errorSpan = createErrorAnimationWithMessage('Username is required!',
-            document.getElementById('register-username'));
-        appendElementBefore(errorSpan, document.getElementById('register-username'));
+    // title validation
+    if (title.length == 0) {
+        const errorSpan = createErrorAnimationWithMessage('Title is required!',
+            document.getElementById('create-title'));
+        appendElementBefore(errorSpan, document.getElementById('create-title'));
         isValid = false;
     }
-    else if (username.includes(' ')) {
-        const errorSpan = createErrorAnimationWithMessage('Username cannot contain empty characters!',
-            document.getElementById('register-username'));
-        appendElementBefore(errorSpan, document.getElementById('register-username'));
-        isValid = false;
-    }
-    else if (username.length < 5 || username.length > 20) {
-        const errorSpan = createErrorAnimationWithMessage('Username must be between 5 and 20 characters!',
-            document.getElementById('register-username'));
-        appendElementBefore(errorSpan, document.getElementById('register-username'));
+    else if (title.length > 80) {
+        const errorSpan = createErrorAnimationWithMessage('Title must be less than 80 characters!',
+            document.getElementById('create-title'));
+        appendElementBefore(errorSpan, document.getElementById('create-title'));
         isValid = false;
     }
 
-    // email validation
-    const emailRegex = /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/;
-
-    if (email.length == 0) {
-        const errorSpan = createErrorAnimationWithMessage('Email is required!',
-            document.getElementById('register-email'));
-        appendElementBefore(errorSpan, document.getElementById('register-email'));
-        isValid = false;
-    }
-    else if (email.length < 5 || email.length > 50) {
-        const errorSpan = createErrorAnimationWithMessage('Email must be between 5 and 50 characters!',
-            document.getElementById('register-email'));
-        appendElementBefore(errorSpan, document.getElementById('register-email'));
-        isValid = false;
-    }
-    else if (email.includes(' ')) {
-        const errorSpan = createErrorAnimationWithMessage('Email cannot contain empty characters!',
-            document.getElementById('register-email'));
-        appendElementBefore(errorSpan, document.getElementById('register-email'));
-        isValid = false;
-    }
-    else if (!email.match(emailRegex)) {
-        const errorSpan = createErrorAnimationWithMessage('Enter a valid email!',
-            document.getElementById('register-email'));
-        appendElementBefore(errorSpan, document.getElementById('register-email'));
+    //categories validation
+    if (categories.length == 0) {
+        const errorSpan = createErrorAnimationWithMessage('Categories are required!',
+            document.getElementById('create-category'));
+        appendElementBefore(errorSpan, document.getElementById('create-category'));
         isValid = false;
     }
 
-    // password validation
-    if (password.length == 0) {
-        const errorSpan = createErrorAnimationWithMessage('Password is required!',
-            document.getElementById('register-password'));
-        appendElementBefore(errorSpan, document.getElementById('register-password'));
+    //description validation
+    if (description.length == 0) {
+        const errorSpan = createErrorAnimationWithMessage('Description is required!',
+            document.getElementById('create-description'));
+        appendElementBefore(errorSpan, document.getElementById('create-description'));
         isValid = false;
     }
-    else if (password.includes(' ')) {
-        const errorSpan = createErrorAnimationWithMessage('Password cannot contain empty characters!',
-            document.getElementById('register-password'));
-        appendElementBefore(errorSpan, document.getElementById('register-password'));
+    else if (description.length < 5) {
+        const errorSpan = createErrorAnimationWithMessage('Description must be at least 5 characters!',
+            document.getElementById('create-description'));
+        appendElementBefore(errorSpan, document.getElementById('create-description'));
         isValid = false;
     }
-    else if (password.length < 5 || password.length > 20) {
-        const errorSpan = createErrorAnimationWithMessage('Password must be between 5 and 20 characters!',
-            document.getElementById('register-password'));
-        appendElementBefore(errorSpan, document.getElementById('register-password'));
-        isValid = false;
-    }
-    else if (password != confirmPassword) {
-        const errorSpan = createErrorAnimationWithMessage('Passwords do not match!',
-            document.getElementById('register-repass'));
-        appendElementBefore(errorSpan, document.getElementById('register-repass'));
-        isValid = false;
+
+    //salary validation
+    if (salary.length != 0) {
+        if (isNaN(salary)) {
+            const errorSpan = createErrorAnimationWithMessage('Salary must be a number!',
+                document.getElementById('create-salary'));
+            appendElementBefore(errorSpan, document.getElementById('create-salary'));
+            isValid = false;
+        }
     }
 
     return isValid;
@@ -102,11 +74,17 @@ function appendElementBefore(newElement, nextElement) {
 function removeErrors(form) {
     const spans = form.querySelectorAll('span');
     const inputs = form.querySelectorAll('input');
+    const textareas = form.querySelectorAll('textarea');
 
-    if (spans.length != 0) {
-        for (let i = 0; i < spans.length; i++) {
-            form.removeChild(spans[i]);
-            inputs[i].style.border = 'none';
-        }
+    for (let i = 0; i < spans.length; i++) {
+        form.removeChild(spans[i]);
+    }
+
+    for (let i = 0; i < textareas.length; i++) {
+        textareas[i].style.border = 'none';
+    }
+
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].style.border = 'none';
     }
 }

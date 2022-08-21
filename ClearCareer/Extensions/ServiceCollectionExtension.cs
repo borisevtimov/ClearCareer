@@ -10,7 +10,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, UserService>();
+            services
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IOfferService, OfficeService>();
 
             return services;
         }
