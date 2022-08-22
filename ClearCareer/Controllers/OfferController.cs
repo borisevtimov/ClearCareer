@@ -61,6 +61,19 @@ namespace ClearCareer.Controllers
             return Redirect("/Offer/All");
         }
 
+        public async Task<IActionResult> Details(string Id)
+        {
+            DetailsViewModel detailsModel = await offerService.GetOfferByIdAsync(Id);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                detailsModel.UserId = user.Id;
+            }
+
+            return View(detailsModel);
+        }
+
         private async Task<string> DownloadImageAsync(IFormFile image)
         {
             string uniqueFileName = null;

@@ -7,5 +7,7 @@ namespace ClearCareer.Core.Interfaces
         Task CreateOfferAsync(CreateOfferViewModel model, string ownerId, string imageName);
 
         Task<List<DashboardOfferViewModel>> GetAllOffersAsync();
+
+        Task<DetailsViewModel> GetOfferByIdAsync(string offerId);
     }
 }

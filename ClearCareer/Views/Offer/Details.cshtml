@@ -1,0 +1,58 @@
+﻿@using ClearCareer.Core.ViewModels
+@using Microsoft.AspNetCore.Identity
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section id="details">
+    <div id="details-wrapper">
+        <img id="details-img" src="/images/@Model.ImageUrl" alt="example1" />
+        <p id="details-title">@Model.Title</p>
+        <p id="details-category">
+            Category: <span id="categories">@Model.Categories</span>
+        </p>
+        <p id="details-salary">
+            Salary:
+            @if (Model.Salary.HasValue)
+            {
+                <span id="salary-number">@String.Format("{0:0.00}", Model.Salary.Value) lv.</span>
+            }
+            else
+            {
+                <span id="salary-number">No salary included</span>
+            }
+        </p>
+        <div id="info-wrapper">
+            <div id="details-description">
+                <h4>Description</h4>
+                <span>@Model.Description</span>
+            </div>
+            <div id="details-requirements">
+                <h4>Requirements</h4>
+                @if (Model.Requirements != null)
+                {
+                    <span>@Model.Requirements</span>
+                }
+                else
+                {
+                    <span>There are no requirements</span>
+                }
+            </div>
+        </div>
+        <p>Applications: <strong id="applications">1</strong></p>
+
+        <!--Edit and Delete are only for creator-->
+        @if (Model.UserId == Model.OwnerId)
+        {
+            <div id="action-buttons">
+                <a href="/Offer/Edit/@Model.Id" id="edit-btn">Edit</a>
+                <a href="/Offer/Delete/@Model.Id" id="delete-btn">Delete</a>
+
+                <!--Bonus - Only for logged-in users ( not authors )-->
+                <a href="/Offer/Apply/@Model.Id" id="apply-btn">Apply</a>
+            </div>
+        }
+    </div>
+</section>

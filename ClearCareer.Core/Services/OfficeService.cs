@@ -4,6 +4,7 @@ using ClearCareer.Core.ViewModels;
 using ClearCareer.Infrastructure.Data;
 using ClearCareer.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+#nullable disable warnings
 
 namespace ClearCareer.Core.Services
 {
@@ -45,6 +46,23 @@ namespace ClearCareer.Core.Services
                 })
                 .OrderByDescending(o => o.Salary.HasValue)
                 .ToListAsync();
+        }
+
+        public async Task<DetailsViewModel> GetOfferByIdAsync(string offerId)
+        {
+            return await context.Offers
+                .Select(offer => new DetailsViewModel()
+                {
+                    Id = offer.Id,
+                    OwnerId = offer.OwnerId,
+                    Categories = offer.Categories,
+                    Description = offer.Description,
+                    ImageUrl = offer.ImageUrl,
+                    Requirements = offer.Requirements,
+                    Salary = offer.Salary,
+                    Title = offer.Title
+                })
+                .FirstOrDefaultAsync(offer => offer.Id == offerId);
         }
     }
 }
