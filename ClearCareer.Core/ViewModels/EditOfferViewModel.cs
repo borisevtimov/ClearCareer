@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ClearCareer.Core.ViewModels
 {
-    public class CreateOfferViewModel
+    public class EditOfferViewModel
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = OffersConstant.Title.Required)]
         [StringLength(80, MinimumLength = 1, ErrorMessage = OffersConstant.Title.Length)]
         public string Title { get; set; }

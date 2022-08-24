@@ -44,14 +44,19 @@
         <p>Applications: <strong id="applications">1</strong></p>
 
         <!--Edit and Delete are only for creator-->
-        @if (Model.UserId == Model.OwnerId)
+        @if (User.Identity.IsAuthenticated)
         {
             <div id="action-buttons">
-                <a href="/Offer/Edit/@Model.Id" id="edit-btn">Edit</a>
-                <a href="/Offer/Delete/@Model.Id" id="delete-btn">Delete</a>
-
-                <!--Bonus - Only for logged-in users ( not authors )-->
-                <a href="/Offer/Apply/@Model.Id" id="apply-btn">Apply</a>
+                @if (Model.UserId == Model.OwnerId)
+                {
+                    <a href="/Offer/Edit/@Model.Id" id="edit-btn">Edit</a>
+                    <a href="/Offer/Delete/@Model.Id" id="delete-btn">Delete</a>
+                }
+                else
+                {
+                    <!--Bonus - Only for logged-in users ( not authors )-->
+                    <a href="/Offer/Apply/@Model.Id" id="apply-btn">Apply</a>
+                }
             </div>
         }
     </div>

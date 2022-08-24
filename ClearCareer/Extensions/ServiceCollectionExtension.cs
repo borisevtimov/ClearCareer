@@ -1,5 +1,6 @@
 ﻿using ClearCareer.Core.Interfaces;
 using ClearCareer.Core.Services;
+using ClearCareer.Core.Utilities;
 using ClearCareer.Infrastructure.Data;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services
                 .AddScoped<IUserService, UserService>()
-                .AddScoped<IOfferService, OfficeService>();
+                .AddScoped<IOfferService, OfficeService>()
+                .AddScoped<IPictureProcessor, PictureProcessor>();
 
             return services;
         }

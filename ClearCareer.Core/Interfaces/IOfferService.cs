@@ -1,4 +1,5 @@
 ﻿using ClearCareer.Core.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ClearCareer.Core.Interfaces
 {
@@ -9,5 +10,11 @@ namespace ClearCareer.Core.Interfaces
         Task<List<DashboardOfferViewModel>> GetAllOffersAsync();
 
         Task<DetailsViewModel> GetOfferByIdAsync(string offerId);
+
+        Task<EditOfferViewModel> GetOfferForEditByIdAsync(string offerId);
+
+        Task EditOfferAsync(EditOfferViewModel model, string imageUrl);
+
+        Task DeleteOfferAsync(string offerId);
     }
 }

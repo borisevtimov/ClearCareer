@@ -1,4 +1,5 @@
 ﻿using ClearCareer.Core.Interfaces;
+using ClearCareer.Core.Utilities;
 using ClearCareer.Core.ViewModels;
 using ClearCareer.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,14 +14,17 @@ namespace ClearCareer.Controllers
     {
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IOfferService offerService;
+        private readonly IPictureProcessor pictureProcessor;
         private readonly UserManager<ApplicationUser> userManager;
 
         public OfferController(IWebHostEnvironment webHostEnvironment,
             IOfferService offerService,
+            IPictureProcessor pictureProcessor,
             UserManager<ApplicationUser> userManager)
         {
             this.webHostEnvironment = webHostEnvironment;
             this.offerService = offerService;
+            this.pictureProcessor = pictureProcessor;
             this.userManager = userManager;
         }
 
@@ -49,7 +53,10 @@ namespace ClearCareer.Controllers
                 }
 
                 ApplicationUser user = await userManager.GetUserAsync(User);
-                string imageName = await DownloadImageAsync(model.Image);
+                
+                string imageName = await pictureProcessor
+                    .DownloadImageAsync($"{webHostEnvironment.WebRootPath}/images", model.Image);
+
                 await offerService.CreateOfferAsync(model, user.Id, imageName);
 
             }
@@ -59,6 +66,43 @@ namespace ClearCareer.Controllers
             }
 
             return Redirect("/Offer/All");
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await offerService.DeleteOfferAsync(id);
+            return Redirect("/Offer/All");
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            EditOfferViewModel model = await offerService.GetOfferForEditByIdAsync(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Edit(EditOfferViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    throw new ArgumentException("Invalid model!");
+                }
+
+                string imageName = await pictureProcessor
+                    .DownloadImageAsync($"{webHostEnvironment.WebRootPath}/images", model.Image);
+                await offerService.EditOfferAsync(model, imageName);
+                await pictureProcessor.DeleteUnusedPicturesAsync($"{webHostEnvironment.WebRootPath}/images");
+                return Redirect($"/Offer/Details/{model.Id}");
+            }
+            catch (Exception)
+            {
+                return View();
+            }
         }
 
         public async Task<IActionResult> Details(string Id)
@@ -72,22 +116,6 @@ namespace ClearCareer.Controllers
             }
 
             return View(detailsModel);
-        }
-
-        private async Task<string> DownloadImageAsync(IFormFile image)
-        {
-            string uniqueFileName = null;
-
-            if (image != null)
-            {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Convert.ToBase64String(Guid.NewGuid().ToByteArray()) + "_" + image.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using FileStream fileStream = new(filePath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
-            }
-
-            return uniqueFileName;
         }
     }
 }

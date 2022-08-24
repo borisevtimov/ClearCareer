@@ -1,0 +1,24 @@
+﻿@using ClearCareer.Core.ViewModels
+@model EditOfferViewModel
+
+@{
+    ViewData["Title"] = "Edit Offer";
+}
+
+<section id="edit">
+    <div class="form">
+        <h2>Edit Offer</h2>
+        <form class="edit-form" enctype="multipart/form-data" action="/Offer/Edit/@Model.Id" method="post">
+            <input asp-for="@Model.Title" type="text" id="job-title" placeholder="Title" value="@Model.Title" />
+            <input asp-for="@Model.Image" type="file" id="edit-logo" accept="image/*" />
+            <input asp-for="@Model.Categories" type="text" id="job-category" placeholder="Category" value="@Model.Categories" />
+            <textarea asp-for="@Model.Description" id="job-description"
+                      placeholder="Description" rows="4" cols="50">@Model.Description</textarea>
+            <textarea asp-for="@Model.Requirements" id="job-requirements" placeholder="Requirements" rows="4"
+                      cols="50">@Model.Requirements</textarea>
+            <input asp-for="@Model.Salary" type="text" id="job-salary" placeholder="Salary" value="@Model.Salary" />
+
+            <button type="submit">post</button>
+        </form>
+    </div>
+</section>

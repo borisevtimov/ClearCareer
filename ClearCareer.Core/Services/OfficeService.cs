@@ -34,6 +34,28 @@ namespace ClearCareer.Core.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task DeleteOfferAsync(string offerId)
+        {
+            Offer offer = await context.Offers.FirstOrDefaultAsync(offer => offer.Id == offerId);
+
+            context.Offers.Remove(offer);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task EditOfferAsync(EditOfferViewModel model, string imageUrl)
+        {
+            Offer? offer = await context.Offers.FirstOrDefaultAsync(offer => offer.Id == model.Id);
+
+            offer.Requirements = model.Requirements;
+            offer.Title = model.Title;
+            offer.Categories = model.Categories;
+            offer.Description = model.Description;
+            offer.ImageUrl = imageUrl ?? OffersConstant.Image.DefaultImageName;
+            offer.Salary = model.Salary;
+
+            await context.SaveChangesAsync();
+        }
+
         public async Task<List<DashboardOfferViewModel>> GetAllOffersAsync()
         {
             return await context.Offers
@@ -58,6 +80,21 @@ namespace ClearCareer.Core.Services
                     Categories = offer.Categories,
                     Description = offer.Description,
                     ImageUrl = offer.ImageUrl,
+                    Requirements = offer.Requirements,
+                    Salary = offer.Salary,
+                    Title = offer.Title
+                })
+                .FirstOrDefaultAsync(offer => offer.Id == offerId);
+        }
+
+        public async Task<EditOfferViewModel> GetOfferForEditByIdAsync(string offerId)
+        {
+            return await context.Offers
+                .Select(offer => new EditOfferViewModel()
+                {
+                    Id = offer.Id,
+                    Categories = offer.Categories,
+                    Description = offer.Description,
                     Requirements = offer.Requirements,
                     Salary = offer.Salary,
                     Title = offer.Title
