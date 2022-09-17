@@ -16,5 +16,7 @@ namespace ClearCareer.Core.Interfaces
         Task EditOfferAsync(EditOfferViewModel model, string imageUrl);
 
         Task DeleteOfferAsync(string offerId);
+
+        Task ApplyForOfferAsync(string userId, string offerId);
     }
 }

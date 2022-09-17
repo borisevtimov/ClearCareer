@@ -17,6 +17,26 @@ namespace ClearCareer.Core.Services
             this.context = context;
         }
 
+        public async Task ApplyForOfferAsync(string userId, string offerId)
+        {
+            Application application = await context.Applications
+                .FirstOrDefaultAsync(a => a.UserId == userId && a.OfferId == offerId);
+
+            if (application != null)
+            {
+                throw new InvalidOperationException("Application already exists!");
+            }
+
+            Application newApplication = new()
+            {
+                UserId = userId,
+                OfferId = offerId
+            };
+
+            await context.Applications.AddAsync(newApplication);
+            await context.SaveChangesAsync();
+        }
+
         public async Task CreateOfferAsync(CreateOfferViewModel model, string ownerId, string imageName)
         {
             Offer offer = new()
@@ -82,9 +102,15 @@ namespace ClearCareer.Core.Services
                     ImageUrl = offer.ImageUrl,
                     Requirements = offer.Requirements,
                     Salary = offer.Salary,
-                    Title = offer.Title
+                    Title = offer.Title,
+                    ApplicationsCount = GetApplicationCount(offerId)
                 })
                 .FirstOrDefaultAsync(offer => offer.Id == offerId);
+        }
+
+        private int GetApplicationCount(string offerId)
+        {
+            return context.Applications.Count(a => a.OfferId == offerId);
         }
 
         public async Task<EditOfferViewModel> GetOfferForEditByIdAsync(string offerId)

@@ -3,7 +3,6 @@ using ClearCareer.Core.Utilities;
 using ClearCareer.Core.ViewModels;
 using ClearCareer.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 #nullable disable warnings
@@ -53,7 +52,7 @@ namespace ClearCareer.Controllers
                 }
 
                 ApplicationUser user = await userManager.GetUserAsync(User);
-                
+
                 string imageName = await pictureProcessor
                     .DownloadImageAsync($"{webHostEnvironment.WebRootPath}/images", model.Image);
 
@@ -72,6 +71,7 @@ namespace ClearCareer.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             await offerService.DeleteOfferAsync(id);
+            await pictureProcessor.DeleteUnusedPicturesAsync($"{webHostEnvironment.WebRootPath}/images");
             return Redirect("/Offer/All");
         }
 
@@ -116,6 +116,25 @@ namespace ClearCareer.Controllers
             }
 
             return View(detailsModel);
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Apply(string id)
+        {
+            try
+            {
+                ApplicationUser user = await userManager.GetUserAsync(User);
+                await offerService.ApplyForOfferAsync(user.Id, id);
+                return Redirect($"/Offer/Details/{id}");
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect($"/Offer/Details/{id}");
+            }
+            catch (Exception)
+            {
+                return Redirect($"/Offer/Details/{id}");
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ namespace ClearCareer.Infrastructure.Data
 
         public DbSet<Offer> Offers { get; set; }
 
+        public DbSet<Application> Applications { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -21,7 +23,7 @@ namespace ClearCareer.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-           
+
             ModelCreator.RenameEntities(builder);
         }
     }

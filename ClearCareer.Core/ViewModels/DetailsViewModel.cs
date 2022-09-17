@@ -21,5 +21,7 @@ namespace ClearCareer.Core.ViewModels
         public string OwnerId { get; set; }
 
         public string UserId { get; set; }
+
+        public int ApplicationsCount { get; set; }
     }
 }

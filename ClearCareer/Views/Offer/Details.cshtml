@@ -41,7 +41,11 @@
                 }
             </div>
         </div>
-        <p>Applications: <strong id="applications">1</strong></p>
+
+        @if (Model.UserId == Model.OwnerId)
+        {
+            <p>Applications: <strong id="applications">@Model.ApplicationsCount</strong></p>
+        }
 
         <!--Edit and Delete are only for creator-->
         @if (User.Identity.IsAuthenticated)

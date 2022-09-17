@@ -21,7 +21,10 @@ namespace ClearCareer.Core.Utilities
 
             foreach (string image in images)
             {
-                if (!offersImages.Contains(Path.GetFileName(image)))
+                if (!offersImages.Contains(Path.GetFileName(image))
+                    && Path.GetFileName(image) != "logo.jpg"
+                    && Path.GetFileName(image) != "pngkey.com-hunting-png-6697165-removebg-preview.png"
+                    && Path.GetFileName(image) != "default_job.png")
                 {
                     File.Delete(image);
                 }
